@@ -101,3 +101,164 @@ Accounting for Differences, many approaches including:
 - Adversarial learning - model trained to predict the dataset that each example came from can be used to generate penalties for the primary prediction task
 - Note that sometimes performing these corrections can inadvertantly cause information to leark between training and test splits in cross-validation (Pitfall 4)
 - Accounting for distributional differences is still an area of open research
+
+### Pitfall 2: Dependent Examples
+
+**Defintiion**
+
+Dependent Examples occur when examples are not independent ~ the values of one example depends on another example
+- Independent Example: Repeated coin tosses ~ the probability of H and T is the same each time
+- Dependent Example: Repeated draws from a card deck without replacing the drawn card (the probability of the next card depends on what has already been drawn)
+- Failing to account for dependencies between examples can lead to biased models and overly optimisitc estimate of model performance
+    - Note: randomized cross-validation does not protect against this problem and overestimates performance
+
+Dependent Examples
+- Note: randomized cross-validation does not protect against this problem and overestimates performance, **but why?**
+    - Because examples in the test set can be correlated with training examples and bring information into the test set that should not be there
+- Generate random bipartitie graphs with ranodm node vectors
+    - Each node contains a vector of features. Each edge indicates an interaction
+    - The Goal is to predict interactions. We encode edges by concatenating the features of the node paits that define them
+    - To estimate model performance, edges are randomly split into training and test sets
+- Measure the auPR Curve
+    - Baseline - random guessing, accurate assessment, because there is no relationship between features and the outcome in the data
+    - However, ML models Random Forest and Logistic Regression are higher than 
+    - Things like this happen all the time in the real world
+
+**Case Study 2**: Predicting 3D enhancer-gene interactions
+- H-C measures 3D contact
+- The examples are enhancer-gene pairs, whcih are labelled as physically interacting or not, using Hi-C data
+- Enhancers allow for context specific gene expression
+- Key issue: Many enhancer interact with the same gene
+    - Humans have approximately 20K genes but 100K-1M enhancers
+
+**Whalen's Proposed Solutions**
+
+- Based on the biology
+    - Genomes are split into chromosomes across which enhancer-gene interactions (almost) never occur
+    - Solution: Block testing and training by chromosome (e.g., train on chromosome 1 data and test on chromosome 2 data)
+    - Downside: There is chromosome-specific biology that'll be completely discarded (i.e., this blocking is very coarse)
+
+- Purely computational
+    - Solution: Ignore enhancer and gene locations, instead make pairs of genomic windows the examples
+    - Downside: While this will it will greatly reduce the number of times each gene is included it will still potentially include dependent examples
+
+- In both cases, performance was worse in training, but the model should be more generalizable
+- Both models picked out the same significant features
+
+**Consider biological structure case by case**
+
+In biological data, due to the interconnected and at times, redundant nature of biological systems, dependence is **pervasive** and unfortunately, hard to recognize
+- Like Distributional Differences, we must consider **biological structure case by case** (which requires domain knowledge)
+
+Interactions
+- protein-protein
+- enhancer-promoter
+- regulator-gene
+- drug-protein
+
+Genotyping
+- genomic loci are in linkage disequalibrium which creates a dependency between variants at those positions
+- The independence and identical distribution assumptions are entangled, for example genotyping results for family members are dependent and also may differ distributionally from other families
+
+Predicting Function
+- functional activity measurements from several cell types or tissues, genomic loci themselves are dependent
+across samples because the underlying functional activity is generally shared
+- family of a protein is predictive of its function, and so measuring true generalization performance of a
+computational method may require ensuring that a protein and its entire family fall on the same side of the
+train–test split.
+
+Dependence relationships are not always known and even known dependencies have a tendency to be ignored
+
+**So, what can be done?**
+
+1. Identify
+
+There is no magic bullet; you will need to try to explicitly consider the underlying dependencies in your data
+One intuitive way of doing this is to visualize the dependencies as a graph
+- nodes represent biological entities (e.g., genes, proteins, regulatory elements or chemicals) 
+- edges represent associations or interactions between nodes (e.g., Genomic proximity, protein complexes, transcriptional networks and metabolic pathways 
+
+What to look for:
+- directly — and even indirectly — connected nodes are dependent, as are edges that share a node.
+- Nodes with many edges (high degree) create groups of correlated nodes
+
+2. Mitigate
+- Approach 1 Blocking (put all dependent examples in the same fold of test/train split)
+    - does not reduce dependence but it does not prevent inflated performance
+- Approach 2: Downsampling/downweighing (don’t include all edges for high degree nodes)
+    - can make the modified data biologically unrealistics
+- Approach 3: Explicitly model the covariance between examples (e.g., mixed effects models, time-series models and autocorrelation models)
+    - may not scale to large genomic datasets
+- Approach 4: Reformulate the problem to exclude problematic features
+- Approach 5: Acknowledge dependence and mitigate overfitting at the model evaluation stage
+
+### Pitfall 3: Confounding
+
+**Definition**
+- Recall: “Dependent Examples” occur when examples are not independent, where the values of one example depends on another example
+- “Confounding” occurs when an unmeasured variable (~confounder) induces dependence between features and the outcome
+    - Example: Do ice cream sales lead to shark attacks? Temperature is the reason why
+- The error is that the confounder is not measured or not thought to be important and is therefore not included in the model
+    - cross-validation does not protect against confounded effects, because the confounding is present in both the training and test sets
+
+Note: Confounders may have little or no effect on the accuracy of predictions, but they leads to incorrect interpretations
+of the learned feature–outcome relationships and poor performance when the model is applied in a new context in
+which the confounder is absent or is distributed differently than in the original context.
+
+**Case study**: Predicting histone modifications
+- H3K27ac (acetylation of the lysine at position 27 of the 3rd histone) makes DNA more accessible and is a marker of active enhancers 
+- H3K27ac can be measured with ChIP-seq
+- One key feature of ChIP-seq (and all sequencing-based assays) is the
+number of reads sequenced (“read depth”~the average number of times a nucleotide is sequenced in a genomic region)
+- The same library can be sequenced to different depths, but the
+depth is not a biological signal
+- The effect of sequencing depth
+on peak height is nonlinear
+
+Due to this:
+
+1. Applying a ML model trained on data with one sequencing depth to a prediction context with a different depth will result in systematic misprediction of signal values.
+2. ML models that aim to predict peaks or learn features enriched in significant peaks would be biased
+when applied to data with a different sequencing depth if they did not account for the confounding.
+
+Pitfall 5: Unbalanced Classes
+
+- if you have a task where you have the same number of negatives and positives, you'll learn both. But if you learn more of negatives, you'll learn more about negatives. Not reallly a problem with learning/training but more about the evaluation. 
+
+- Problem with unbalance between test and prediction. You want your prediction to reflect the test or reality.
+- One side of your coin, you want prediction/test to be balanced. The other side, how do you even look at tests to see if something is useful in the prediciton
+
+1. AUC or auROC - closer to one is better
+    TPR vs FPS
+2. Precision vs Recall
+fraction of all your positives that are tru. 
+Fractionof all positives recalled (same as TPR), how many of them did you get
+-   For auROC - problem due to lots of negatives. This isn't seen for auPR. The difference is seen in the demonminator.
+
+**So, what can be done?**
+
+The key is rebalancing. Three types
+1. Oversampling the minority class- duplicate existing data or creating exmaples, get more of the plausible
+2. Undersampling majority
+3. Weigh your samples - use the inverse of the proportion. The model will be trained to put more emphasis on minority
+- oversampling con - bigger data ~ problem
+- undersampling con - data is valuable
+- weights - new hyper-parameter - pain in the butt - can use your domain knowledge, but this can be difficult to accomplish
+These approaches should improve performance, assumed you want to improve rebalancing. 
+
+**Biology Examples**
+It is pretty common for there to be tons of negatives in biology. Assumed that the data is unbalanced. look into the non-coding genome. Not a lot of it is doing anything to the predicition set. 
+
+- measure peaks or fractions of the genome. The non-coding represent a lot of negatives. 
+- no matter what you're doing, this should be done inside cross validation or you might be leaking data.
+
+- when annotatig proteins, most of their functions are unknown most are negative. need to think of some way to deal with this. 
+
+- drug targets on the other hand are mostly positive
+
+Come up with your example - Predicting protein function
+1. Distributional differences - New and old technology
+2. Dependent - familiies
+3. confounding - new and old technology such as mass spectometry from ten years ago and today or even with different company's mass spect or procedures
+4. Leaky preprocessing - Processing the test and train the same
+5. most are negative 
