@@ -79,3 +79,4 @@ This is all just to say, UMAP and t-SNE are performed and it is common to make a
 Required viewing and mini quiz. Optional paper that is too much information. 
 
 https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011288
+https://www.youtube.com/watch?v=vsNDxmVMXKQ
