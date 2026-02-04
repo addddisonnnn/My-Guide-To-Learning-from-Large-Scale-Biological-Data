@@ -1,4 +1,4 @@
-## Session 1: The "Art" of Single-cell Genomics
+## Session 2: The "Art" of Single-cell Genomics
 ### Learning from Large-Scale Biological Data
 ### Monday February 2, 2026
 We'll be delving into the common pitfalls of mahcine learning in gneomics, scenairos of this and how to circumvent these setbacks. 
@@ -82,4 +82,23 @@ https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011288
 Required viewing and mini quiz. Optional paper that is too much information. 
 
 https://www.cell.com/cell-systems/fulltext/S2405-4712(23)00244-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2405471223002442%3Fshowall%3Dtrue
-https://www.youtube.com/watch?v=vsNDxmVMXKQ
+
+[Gennady Gorin: Stochastic foundations for single-cell RNA sequencing](https://www.youtube.com/watch?v=vsNDxmVMXKQ)
+
+Chemical Engineer
+- Three themes aboubt models: biological, computational, and statistics
+- RNA is the connection between DNA and Proteins
+- Too much DNA to sequence and it's the same in every cell and can't measure all the protein's function, so we can use RNA and using RNA through reverse transcription to form cDNA and with DNA sequencing and alingnment to figure out relevant DNA and get a (mature) RNA counts matrix (Cells x Genes)
+
+Why single-cell RNA sequencing
+- inexpensive genome-wide information for millions of cell, plenty of biological 'signal' in gene expression differences, and basis for comparing healthy and pathological cells
+- Look into the limitations
+
+Technical noise is ubitqious, random
+
+Goal: build a model P(x) that reflects the RNA biology
+- contextualilze current pipelines, build up to necessary complexity
+
+Stochastic differential equations for RNA-life decay: amount of RNA changes based on the production and degradation and noise
+
+Discrete stochastic processes
