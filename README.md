@@ -17,4 +17,5 @@ Documenting my journey on learning from large-scale biological data
 - We can learn from this large and complex ~large-scale biological data through modern algorithms and machine learning tools and turn it into biologial insights
 - From this, we can familiar with the most common types of large-scale data encouraged in biology, the analyses to be performed on these data types, understand the potential pitfalls of each of these approaches, and apply these methods to new data with a critical eye
 
-**Session 1**: Pitfalls of machine learning in genomics
+**Session 1**: Pitfalls of Machine Learning in Genomics
+**Session 2**: The "Art" of Single-cell Genomics
