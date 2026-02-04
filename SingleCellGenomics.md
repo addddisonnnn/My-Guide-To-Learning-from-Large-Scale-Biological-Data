@@ -76,7 +76,10 @@ Keeps shape in mind
 
 This is all just to say, UMAP and t-SNE are performed and it is common to make assumptions for 2 dimensional data. 
 
+Today's Lecture
+https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011288
+
 Required viewing and mini quiz. Optional paper that is too much information. 
 
-https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011288
+https://www.cell.com/cell-systems/fulltext/S2405-4712(23)00244-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2405471223002442%3Fshowall%3Dtrue
 https://www.youtube.com/watch?v=vsNDxmVMXKQ
