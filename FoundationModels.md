@@ -1,4 +1,4 @@
-## Session: Foundation Models
+## Session 5: Foundation Models
 ### Learning from Large-Scale Biological Data
 ### March 16, 2026
 
