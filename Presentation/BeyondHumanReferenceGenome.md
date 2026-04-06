@@ -67,3 +67,11 @@
 #### Reference-free Protein Profiling identifies immune recpetors
 - Map anchors back to genes
 - B cells are strongest, T cells, V sets, signals are not seen in controls
+
+### Pitfalls
+- Pseudoreplication, Confounding, no explicit batch correction
+
+### Limitations
+1. Cannot distinguish biological mechanism
+2. Still depends on references for annotation
+3. Low-count anchors are discarded
