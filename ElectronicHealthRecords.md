@@ -34,3 +34,8 @@
 - But, GPT-4 outperforms Med-PaLM 2 on these medicial exams. And Med-Gemini does even better. They're claiming that they're reaching a limit of performance where 'they can't even do better than previous'. 
 - Med-Geminii is different than the previous as it incorporates multimodal data and can self train itself with web search. 
 - First interesting task is genomic tasks that aren't necessarily hard questions as there are software packages that can translate nucleotides and figure out protein functions and alignments. And it's not performing well at all even if it can web search. 
+- How about long-form EHR where MIMIC is a test to how it retreives long EHR and makes diagnoses? This is a relatively unsophisticated baseline, but it isn't outperforming its general embedding
+- Last thing it understands well is videos, a video would play and it would identify mistakes made by surgeons in real time ~ when safety protocools are violated
+
+#### Discussion Topics
+- Would you give your data to LLM, would you trust the diagnosis, are you worried about the inaccurate and irrelevant content, worried about potential bias, advantage of asking for LLM, would you insist on human in the loop?
