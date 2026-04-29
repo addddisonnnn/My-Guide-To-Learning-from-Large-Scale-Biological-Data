@@ -80,3 +80,54 @@
 - 6.7% of cells were flagges as potentially novel
 - Data processing and clustering
 - Cancer fibroblast dataset - fibroblast are a structure within cancers, focused on breast cancer
+
+### Team 3
+#### Introduction
+- Use scATACseq, Harder to infer the direction of cell
+- Methylation over time decreases
+- EpiTrace - count how many clock-like loci are open in each cell and uses that to estimate age
+- Output is relative ranking, then ranking used to orient downstream trahectory and linage analyses
+
+- Is the dataset made up of several experiments performed at different times?
+
+#### Methods
+- Step 1 - build the reference clock. Methylation datasets and looks for CpG loci
+- Step 2 - read loci in scATAC-seq. Authors overlap ATAC peaks with ClockDML to ask whether those age-linked regions are open or closed. Converts a methylation-derived reference into an ATAC-based age signal. 
+- Step 3 - denoise sparse single-cell ATAC data. EpiTrace builds a cell-cell singularity matrix using the top 5% most variable ATAC scores
+- Step 4 - rank cells by mitotic age
+- Step 5 - iteratively improve the clock, refine the data to converge age
+- This can be used to orient linage trees
+#### Reproduction
+- Glioblastoma clonal evolution
+- Development history of human cortical gyridication fetus
+- Robust code provided by authors, the cell type clusters in similar regions but not exactly
+
+### Team 5 - EpiModX
+[Predicting Disease-Specific Histone Modifications and Functional Effects of Non-coding Variants by Leveraging DNA Language Models](https://www.biorxiv.org/content/10.1101/2025.06.15.659749v1.full)
+
+- Epigenetic modifications contribute to AD and AML
+- LLM + CNN + Mixture of experts
+- DNA Language Model - Caduceus - learns the epigenetics patterns
+- Convolutional blocks - deep neural network with four CNN layers and max-pooling layers
+- Mixture of experts attention layer - used to identify difference in disease-specific progression, there are 16 experts, basically networks, gets a weighted expert output 
+#### Reproduction
+- Training model with data parallelization due to GPU capability and testing with checkpoint keys
+- reproduced LLM and MoE model training on all three histone modifications - h2k27ac, h3k27me3, and h3k27
+#### Extension
+- Explored three model architecures: CNN-BLSTM, CNN-MoE, and LLM-MoE
+
+### Team 9 - ddqc
+[Biology-inspired data-driven quality control for scientific discovery in single-cell transcriptomics](https://pubmed.ncbi.nlm.nih.gov/36575523/)
+
+#### Reproduction
+- ddqc retins the most cells, miQC and standard QC remove a large fraction of cells, and no QC results in noisy and poorly defined clusters
+
+#### Critiques
+- Paper assumes cells cluster together
+- Paper didn't run ddqc on disease vs healthy datasets
+- Did not explore different clustering resolutions
+
+#### Extensions
+- Explored miQC and ddqc differences on healthy vs disease datasets (kidney)
+- Violin plots of how much data was removed
+- UMAP of cell distribution and clustering structures
